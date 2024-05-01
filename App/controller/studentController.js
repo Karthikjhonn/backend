@@ -11,17 +11,23 @@ const getStudent = async (req, res, next) => {
 };
 const getStudentTeacher = async (req, res, next) => {
   try {
-    console.log(req.params.id);
-    const userId=req.params.id
-    if(!userId){
-      throw new Error("user id required")
+    const userId = req.params.id;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID required" });
     }
-    const allStudent = await student.find({userId:userId});
+
+    const allStudent = await student.find({ userId: userId });
+
+    if (allStudent.length === 0) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
     res.status(200).json(allStudent);
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
+
 const createStudent = async (req, res, next) => {
   console.log(req.body);
   const { userId, name, class: classLevel } = req.body;
