@@ -16,7 +16,14 @@ const studentSchema = mongoose.Schema(
     Address: { type: String, required: true },
     Branch: { type: String, required: true },
     CourseName: { type: Array, required: true },
-    CourseCode: { type: Array || Number },
+    // CourseCode: { type: Array || Number },
+    CourseCode: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "courses",
+        required: true,
+      },
+    ],
     ClassType: { type: String, required: true },
     Payment: { type: String },
     Status: { type: String },

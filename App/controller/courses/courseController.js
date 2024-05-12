@@ -1,5 +1,6 @@
 const messages = require("../../messages/messages");
 const courseSchema = require("../../model/courseModel");
+
 const GetAllCourse = async (req, res, next) => {
   try {
     const allCourse = await courseSchema.find();
@@ -11,15 +12,16 @@ const GetAllCourse = async (req, res, next) => {
 };
 const CreateCourse = async (req, res, next) => {
   console.log(req.body);
-  const { courseCode } = req.body;
+  const { CourseCode } = req.body;
   try {
     if (Object.keys(req.body).length === 0) {
       const error = new Error(messages.requestBody.emptyBody);
       error.status = 400;
       return next(error);
     }
-    const existingCourse = await courseSchema.findOne({ courseCode });
-
+    console.log(CourseCode);
+    const existingCourse = await courseSchema.findOne({ CourseCode });
+    console.log(existingCourse);
     if (existingCourse) {
       const error = new Error(messages.courseMessage.courseExist);
       error.status = 400;
@@ -34,8 +36,9 @@ const CreateCourse = async (req, res, next) => {
   }
 };
 const UpdateCourse = async (req, res, next) => {
+  const Id = req.query.id;
   try {
-    const findCourse = await courseSchema.findById(req.params.id);
+    const findCourse = await courseSchema.findById(Id);
     if (!findCourse) {
       const error = new Error(messages.courseMessage.cnf);
       error.status = 404;
@@ -47,11 +50,9 @@ const UpdateCourse = async (req, res, next) => {
       throw error;
     }
 
-    const updatedCourse = await courseSchema.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const updatedCourse = await courseSchema.findByIdAndUpdate(Id, req.body, {
+      new: true,
+    });
     res.status(200).json({
       message: messages.courseMessage.update,
       course: updatedCourse,
@@ -63,8 +64,9 @@ const UpdateCourse = async (req, res, next) => {
   }
 };
 const DeleteCourse = async (req, res, next) => {
+  const Id = req.query.id;
   try {
-    const deletedCourse = await courseSchema.findByIdAndDelete(req.params.id);
+    const deletedCourse = await courseSchema.findByIdAndDelete(Id);
 
     if (!deletedCourse) {
       const error = new Error(messages.courseMessage.cnf);
@@ -74,7 +76,7 @@ const DeleteCourse = async (req, res, next) => {
 
     res.status(200).json({
       message: messages.courseMessage.delete,
-      id: req.params.id,
+      id: Id,
     });
   } catch (err) {
     const error = new Error(messages.courseMessage.deleteCourseError);

@@ -13,5 +13,8 @@ const authenticate = require("../../middleware/AuthenticationMiddleware");
 // router.put('/:id',updateStudent)
 // router.delete('/:id',deleteStudent)
 router.route("/").get(getStudent).post(createStudent);
-router.route("/:id").put(updateStudent).delete(deleteStudent).get(getStudentTeacher);
+router.route("/update").put(updateStudent);
+router.route("/delete").delete(deleteStudent);
+router.route("/id").get(getStudentTeacher);
+
 module.exports = router;

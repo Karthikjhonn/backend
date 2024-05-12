@@ -1,5 +1,6 @@
 const { urlencoded } = require("body-parser");
 const express = require("express");
+const path = require('path')
 const dotenv = require("dotenv").config();
 const k1Routes = require("./Routes/routes");
 const connectDb = require("../App/database/db");
@@ -11,7 +12,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("Welcome To MERN Backend!");
+  const filePath = path.join(__dirname,'index.html')
+  res.sendFile(filePath);
 });
 
 // app.use("/api/k1/", require("../App/Routes/studentRoute"));
