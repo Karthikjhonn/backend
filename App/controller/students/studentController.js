@@ -1,15 +1,37 @@
 const messages = require("../../messages/messages");
 const student = require("../../model/studentModel");
 
+// const getStudent = async (req, res, next) => {
+//   try {
+//     const allStudent = await student.find();
+//     res.status(200).json(allStudent);
+//   } catch (err) {
+//     res.status(400);
+//     throw new Error(messages.clientSideError.clientError);
+//   }
+// };
 const getStudent = async (req, res, next) => {
   try {
-    const allStudent = await student.find();
-    res.status(200).json(allStudent);
+    const allStudents = await student.find();
+
+    const aggregatedData = await student.aggregate([
+      {
+        $lookup: {
+          from: "courses",
+          localField: "CourseCode",
+          foreignField: "_id",
+          as: "courseDetails",
+        },
+      },
+    ]);
+    console.log("aggregatedData", aggregatedData);
+
+    res.status(200).json(aggregatedData);
   } catch (err) {
-    res.status(400);
-    throw new Error(messages.clientSideError.clientError);
+    res.status(400).json({ error: err.message });
   }
 };
+
 const getStudentTeacher = async (req, res, next) => {
   try {
     const userId = req.params.id;
@@ -31,7 +53,6 @@ const getStudentTeacher = async (req, res, next) => {
 
 const createStudent = async (req, res, next) => {
   console.log(req.body);
-  const { userId, name, class: classLevel } = req.body;
   try {
     if (Object.keys(req.body).length === 0) {
       const error = new Error(messages.requestBody.emptyBody);
@@ -48,8 +69,9 @@ const createStudent = async (req, res, next) => {
   }
 };
 const updateStudent = async (req, res, next) => {
+  const Id = req.query.id;
   try {
-    const findStudent = await student.findById(req.params.id);
+    const findStudent = await student.findById(Id);
     if (!findStudent) {
       const error = new Error(messages.studentsMessage.snf);
       error.status = 404;
@@ -61,11 +83,9 @@ const updateStudent = async (req, res, next) => {
       throw error;
     }
 
-    const updateStudent = await student.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const updateStudent = await student.findByIdAndUpdate(Id, req.body, {
+      new: true,
+    });
     res.status(200).json({
       message: messages.studentsMessage.updateStudent,
       student: updateStudent,
@@ -81,8 +101,10 @@ const updateStudent = async (req, res, next) => {
 };
 
 const deleteStudent = async (req, res, next) => {
+  const Id = req.query.id;
+
   try {
-    const deletedStudent = await student.findByIdAndDelete(req.params.id);
+    const deletedStudent = await student.findByIdAndDelete(Id);
 
     if (!deletedStudent) {
       // return res.status(404).json({ message: "Student not found" });
@@ -93,7 +115,7 @@ const deleteStudent = async (req, res, next) => {
 
     res.status(200).json({
       message: messages.studentsMessage.deleteStudent,
-      id: req.params.id,
+      id: Id,
     });
   } catch (err) {
     const error = new Error(messages.studentsMessage.deleteStudentError);

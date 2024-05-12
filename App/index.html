@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERN Backend</title>
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100dvh;
+            width: 100%;
+        }
+
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            /* Light gray background */
+        }
+
+        .typewriter {
+            font-family: monospace;
+            /* Monospace font for typewriter effect */
+            font-size: 2em;
+            white-space: nowrap;
+            /* Keep text on a single line */
+            overflow: hidden;
+            text-align: center;
+            /* Hide text that isn't being "typed" yet */
+        }
+
+        /* Typewriter animation reveals text one character at a time */
+        @keyframes typewriter {
+            from {
+                width: 0;
+                /* Start with no visible text */
+            }
+
+            to {
+                width: 100%;
+                /* Reveal all text by end of animation */
+            }
+        }
+
+        /* Apply the typewriter animation to the text */
+        .text {
+            animation: typewriter 3s steps(30) infinite alternate;
+            animation-fill-mode: both;
+            /* 3-second typewriter effect */
+        }
+
+        /* Color change animation changes the text color */
+        @keyframes colorChange {
+            0% {
+                color: rgb(11, 11, 4);
+                /* Start with red */
+            }
+
+            20% {
+                color: rgb(245, 245, 89);
+                /* Start with red */
+            }
+
+            40% {
+                color: rgb(255, 195, 92);
+                /* Start with red */
+            }
+
+            60% {
+                color: rgb(101, 255, 101);
+                /* Change to green */
+            }
+
+            80% {
+                color: rgb(186, 88, 255);
+                /* Change to green */
+            }
+
+            100% {
+                color: rgb(255, 165, 255);
+                /* Change to blue */
+            }
+        }
+
+        /* Apply the color change animation to the text */
+        .typewriter .text {
+            animation: colorChange 20s infinite both;
+            font-size: 6rem;
+            font-weight: 900;
+            white-space: normal;
+            text-align: center;
+            /* 6-second color cycle */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="typewriter">
+        <span class="text">Welcome to MERN Backend server!</span>
+    </div>
+</body>
+
+</html>
