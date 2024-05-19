@@ -69,7 +69,8 @@ const createStudent = async (req, res, next) => {
   }
 };
 const updateStudent = async (req, res, next) => {
-  const Id = req.query.id;
+  const {Id}= req.body
+  console.log(Id);
   try {
     const findStudent = await student.findById(Id);
     if (!findStudent) {
@@ -101,13 +102,12 @@ const updateStudent = async (req, res, next) => {
 };
 
 const deleteStudent = async (req, res, next) => {
-  const Id = req.query.id;
+  const {Id} = req.body;
 
   try {
     const deletedStudent = await student.findByIdAndDelete(Id);
 
     if (!deletedStudent) {
-      // return res.status(404).json({ message: "Student not found" });
       const error = new Error(messages.studentsMessage.snf);
       error.status = 404;
       throw error;
@@ -115,7 +115,7 @@ const deleteStudent = async (req, res, next) => {
 
     res.status(200).json({
       message: messages.studentsMessage.deleteStudent,
-      id: Id,
+      student: deletedStudent,
     });
   } catch (err) {
     const error = new Error(messages.studentsMessage.deleteStudentError);
