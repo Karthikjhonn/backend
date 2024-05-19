@@ -36,10 +36,9 @@ const CreateCourse = async (req, res, next) => {
   }
 };
 const UpdateCourse = async (req, res, next) => {
-  const Id = req.query.id;
+  const { Id } = req.body;
   try {
-    const findCourse = await courseSchema.findById(Id);
-    if (!findCourse) {
+    if ((Id == null || Id == "", Id == undefined)) {
       const error = new Error(messages.courseMessage.cnf);
       error.status = 404;
       throw error;
@@ -53,6 +52,9 @@ const UpdateCourse = async (req, res, next) => {
     const updatedCourse = await courseSchema.findByIdAndUpdate(Id, req.body, {
       new: true,
     });
+    if (!updatedCourse) {
+      throw new Error(messages.courseMessage.cnf);
+    }
     res.status(200).json({
       message: messages.courseMessage.update,
       course: updatedCourse,
@@ -64,7 +66,7 @@ const UpdateCourse = async (req, res, next) => {
   }
 };
 const DeleteCourse = async (req, res, next) => {
-  const Id = req.query.id;
+  const {Id} = req.body;
   try {
     const deletedCourse = await courseSchema.findByIdAndDelete(Id);
 
@@ -76,7 +78,7 @@ const DeleteCourse = async (req, res, next) => {
 
     res.status(200).json({
       message: messages.courseMessage.delete,
-      id: Id,
+      id: deletedCourse,
     });
   } catch (err) {
     const error = new Error(messages.courseMessage.deleteCourseError);

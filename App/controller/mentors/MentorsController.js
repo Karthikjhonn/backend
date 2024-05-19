@@ -36,4 +36,41 @@ const createMentor = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { getAllMentor, createMentor };
+const updateMentor = async (req, res, next) => {
+  const { Id } = req.body;
+
+  try {
+    if (Id == "" || Id == undefined || Id == null) {
+      const error = new Error("Mentor not found");
+      error.status = 400;
+      next(error);
+    }
+    if (Object.keys(req.body).length === 0) {
+      const error = new Error("Request body empty");
+      error.status = 400;
+      next(error);
+    }
+    const mentor = await mentors.findByIdAndUpdate(Id, req.body, { new: true });
+    if(!mentor){
+      throw new Error("Mentor not found.");
+    }
+    res.status(200).json({ message: "Updated successfully", mentor: mentor });
+  } catch (error) {
+    next(error);
+  }
+};
+const deleteMentor = async (req, res, next) => {
+  const { Id } = req.body;
+  try {
+    if (Id == "" || Id == undefined || Id == null) {
+      throw new Error("Mentor not found");
+    }
+    const deletedMentor = await mentors.findByIdAndDelete(Id);
+    res
+      .status(200)
+      .json({ message: "deleted successfully", mentor: deletedMentor });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { getAllMentor, createMentor, updateMentor, deleteMentor };
