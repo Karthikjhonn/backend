@@ -58,22 +58,22 @@
         @keyframes colorChange {
             0% {
                 color: rgb(11, 11, 4);
-         
+
             }
 
             20% {
                 color: rgb(245, 245, 89);
-               
+
             }
 
             40% {
                 color: rgb(255, 195, 92);
-               
+
             }
 
             60% {
                 color: rgb(101, 255, 101);
-              
+
             }
 
             80% {
@@ -92,8 +92,27 @@
             white-space: normal;
             text-align: center;
         }
-        a{
+
+        a {
             color: #222;
+        }
+
+        .note {
+            color: #01010182;
+            max-width: 416px;
+            text-align: center;
+        }
+
+        .btn {
+            background: #131313;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            border-radius: 10px;
+            padding: 12px;
+            font-family: monospace;
+         
+            font-size: 16px;
         }
     </style>
 </head>
@@ -102,7 +121,10 @@
     <div class="typewriter">
         <span class="text">Welcome to MERN Backend server!</span>
     </div>
-    <a href="/api/k1/student">Get details</a>
+    <a href="/api/k1/products" class="btn">Get All product details</a>
+    <small class="note">Note: The server is hosted on RENDER's free hosting tier. The first API call may take up to 1
+        minute due to server
+        startup. <br> Thank you for your patience!</small>
 </body>
 
 </html>
